@@ -5,3 +5,9 @@
 .end-square{
     background: lightcoral
 }
+.visited{
+    background: orange
+}
+.path{
+    background: lightgreen
+}

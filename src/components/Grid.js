@@ -4,14 +4,18 @@ import './grid.css'
 
 export default class Grid extends Component {
     
-    renderSquare(gridInfo){
+    renderSquares(gridInfo, visited, path){
         if(gridInfo.rows === 0){return null}
         const squareArray = new Array(this.props.totalSquares)
         for(let i = 0; i < this.props.totalSquares; i++){
             if(gridInfo.start === i){
                 squareArray.push(<Square className="start-square" onClick={this.props.onClick} i={i} key={i}></Square>)
-            } else if(gridInfo.end === i){
+            }else if(gridInfo.end === i){
                 squareArray.push(<Square className="end-square" onClick={this.props.onClick} i={i} key={i}/>)
+            }else if(path.includes(i)){
+                squareArray.push(<Square className="path" onClick={this.props.onClick} i={i} key={i}/>)
+            }else if (visited[i]){
+                squareArray.push(<Square className="visited" onClick={this.props.onClick} i={i} key={i}/>)
             }else {
                squareArray.push(<Square onClick={this.props.onClick} i={i} key={i}/>) 
             }
@@ -29,7 +33,7 @@ export default class Grid extends Component {
         }
         return(
             <div style={gridStyle}>
-                {this.renderSquare(this.props.gridInfo)}
+                {this.renderSquares(this.props.gridInfo, this.props.visited, this.props.path)}
             </div>
         )
     }

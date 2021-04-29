@@ -22,8 +22,12 @@ export default class Buttons extends Component {
                 >
                 End</button>
                 <button 
-                onClick={this.props.handlePress}
+                onClick={this.props.startSearch}
                 value="begin">Begin</button>
+                <button
+                onClick={this.props.clearBoard}>
+                    Clear
+                </button>
 
             </div>
         )
