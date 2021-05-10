@@ -61,7 +61,7 @@ export default class App extends Component {
               clearInterval(searchInterval)
               resolve()
           }
-      }, 60)
+      }, 500)
     })
 
     searchPromise.then(() => {

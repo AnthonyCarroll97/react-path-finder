@@ -7,18 +7,17 @@ export default class Grid extends Component {
     renderSquares(gridInfo, visited, path){
         if(gridInfo.rows === 0){return null}
         const squareArray = new Array(this.props.totalSquares)
+        
+
         for(let i = 0; i < this.props.totalSquares; i++){
-            if(gridInfo.start === i){
-                squareArray.push(<Square className="start-square" onClick={this.props.onClick} i={i} key={i}></Square>)
-            }else if(gridInfo.end === i){
-                squareArray.push(<Square className="end-square" onClick={this.props.onClick} i={i} key={i}/>)
-            }else if(path.includes(i)){
-                squareArray.push(<Square className="path" onClick={this.props.onClick} i={i} key={i}/>)
-            }else if (visited[i]){
-                squareArray.push(<Square className="visited" onClick={this.props.onClick} i={i} key={i}/>)
-            }else {
-               squareArray.push(<Square onClick={this.props.onClick} i={i} key={i}/>) 
-            }
+            var className;
+            if (gridInfo.start === i){className = "start-square"}
+            else if (gridInfo.end === i){className = "end-square"}
+            else if (path.includes(i)){className = "path"}
+            else if (visited[i]){className = "visited"}
+            else {className = null}
+
+            squareArray.push(<Square className={className} onClick={this.props.onClick} i={i} key={i}/>)
         }
         return squareArray
            
