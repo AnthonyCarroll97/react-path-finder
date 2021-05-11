@@ -6,11 +6,11 @@ export default class Buttons extends Component {
     render() {
         
         return (
-            <div>
+            <div className="buttons-container">
                 <button 
                 onClick={this.props.handlePress}
                 value="start"
-                className={this.props.setStart ? "start-active" : null}
+                className={this.props.buttonControls.setStart ? "start-active" : null}
                 >
                 Start
                 </button>
@@ -18,7 +18,7 @@ export default class Buttons extends Component {
                 <button 
                 onClick={this.props.handlePress}
                 value="end"
-                className={this.props.setEnd ? "end-active" : null}
+                className={this.props.buttonControls.setEnd ? "end-active" : null}
                 >
                 End</button>
                 <button 
@@ -27,6 +27,13 @@ export default class Buttons extends Component {
                 <button
                 onClick={this.props.clearBoard}>
                     Clear
+                </button>
+                <button
+                onClick={this.props.handlePress}
+                value="block"
+                className={this.props.buttonControls.setBlocks ? "block-active" : null}>
+
+                    Set Block
                 </button>
 
             </div>

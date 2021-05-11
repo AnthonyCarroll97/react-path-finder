@@ -11,14 +11,19 @@ export default class App extends Component {
         rows: 0,
         columns: 0,
         start: null,
-        end: null
+        end: null,
+        
+      },
+      buttonControls: {
+        setStart: false,
+        setEnd: false,
+        setBlocks: false,
       },
       totalSquares: 0,
       adjList: {},
-      setStart: false,
-      setEnd: false,
       visited: [],
-      path: []
+      path: [],
+      blocks: []
     }
     
   }
@@ -29,7 +34,7 @@ export default class App extends Component {
       rows: parseInt(userInput.rows),
       columns: parseInt(userInput.columns)
     }
-    this.setState({totalSquares, gridInfo}, this.createAdjList)
+    this.setState({totalSquares, gridInfo})
   }
   startSearch = () => {
     const que = []
@@ -81,8 +86,9 @@ export default class App extends Component {
     // Convert state into variables to improve readability
     const columns = this.state.gridInfo.columns
     const totalSquares = this.state.totalSquares
+    const blocks = this.state.blocks
     let adjList = {}
-    
+    // Create array of all neighbours for a given square
     for(let i=0; i < totalSquares; i++){
       let adjArray = []
       if((i + 1) % columns !== 0){ adjArray.push(i + 1) }
@@ -90,35 +96,44 @@ export default class App extends Component {
       if(i % columns !== 0){ adjArray.push(i - 1) }
       if (i > columns - 1 ){ adjArray.push(i - columns) }
 
-      adjList[i] = adjArray
+      // Remove squares that have blockers on them
+      let filteredArray = adjArray.filter(element => {
+        if(blocks.includes(element)){
+          return false
+        }
+        return true
+      })
+      adjList[i] = filteredArray
     }
     console.log(adjList)
-    this.setState({adjList})
+    console.log("made the list")
+    this.setState({adjList}, this.startSearch)
   }
 
   getPosition = (event) => {
     const position = parseInt(event.target.value)
     const gridInfo = this.state.gridInfo
 
-      if(this.state.setStart){
+      if(this.state.buttonControls.setStart){
           gridInfo.start = position
           this.setState(
-            {gridInfo,
-            setStart: false
-            }, () => {
-              console.log(this.state)
-            })
-        } else if (this.state.setEnd){
+            {gridInfo})
+        } else if (this.state.buttonControls.setEnd){
           gridInfo.end = position
-          this.setState(
-            {gridInfo,
+          this.setState({
+            gridInfo,
             setEnd: false
-            
-            }, () => {
-            console.log(this.state)
           })
-      }
+        } else if(this.state.buttonControls.setBlocks){
+          let blocks = this.state.blocks
+          blocks.push(position)
+          this.setState({
+            blocks,
+            setBlocks: false
+          },() => console.log(this.state))
+        }
   }
+  
   clearBoard = () => {
     const gridInfo = this.state.gridInfo
     gridInfo.end = null
@@ -128,8 +143,13 @@ export default class App extends Component {
 
   handleButton = (event) => {
     const value = event.target.value
-    if(value === "start"){this.setState((prevState) => ({setStart: !prevState.setStart}))}
+    const buttonControls = this.state.buttonControls
+    if(value === "start"){
+      buttonControls.setStart = true
+      this.setState({ buttonControls }, () => {console.log(this.state)})
+    }
     if(value === "end"){this.setState((prevState) => ({setEnd: !prevState.setEnd}))}
+    if(value === "block"){this.setState((prevState) => ({setBlocks: !prevState.setBlocks}))}
   }
 
   render() {
@@ -145,9 +165,8 @@ export default class App extends Component {
         />
         <Buttons 
         handlePress={this.handleButton} 
-        setStart={this.state.setStart}
-        setEnd={this.state.setEnd}
-        startSearch={this.startSearch}
+        buttonControls={this.state.buttonControls}
+        startSearch={this.createAdjList}
         clearBoard={this.clearBoard}
         />
         
