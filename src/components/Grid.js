@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import Square from './Square'
-import './grid.css'
 
 export default class Grid extends Component {
     constructor(props){
         super(props)
     }
-    renderSquares(gridInfo, visited, path,blocks){
+    renderSquares(gridInfo, visited, path, blocks){
         if(gridInfo.rows === 0){return null}
         const squareArray = new Array(this.props.totalSquares)
         

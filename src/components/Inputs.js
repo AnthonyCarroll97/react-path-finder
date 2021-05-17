@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../style.css'
 
 export default class Inputs extends Component {
     constructor(props){
@@ -56,7 +57,7 @@ export default class Inputs extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="inputs-main">
                 <form onSubmit={this.handleSubmit}>
                     <input 
                     type="number"

@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import Buttons from './components/Buttons'
 import Grid from './components/Grid'
 import Inputs from './components/Inputs'
-
-
+import './style.css'
 
 export default class App extends Component {
 
@@ -70,7 +69,7 @@ export default class App extends Component {
         }
         if (visited[end]){
             clearInterval(searchInterval)
-            resolve()
+            resolve({prev, end})
         }
     }, 100)
     })
@@ -79,8 +78,9 @@ export default class App extends Component {
   }
   bfs = () => {
     this.startSearch()
-    .then(() => {
+    .then((data) => {
       // find shortest path
+      const {prev, end} = data
       const path = Array(1).fill(end)
       let current = end
       while(prev[current] != null){
@@ -96,9 +96,11 @@ export default class App extends Component {
   
   createAdjList = () => {
     // Convert state into variables to improve readability
-    const columns = this.state.gridInfo.columns
     const totalSquares = this.state.totalSquares
+    const columns = this.state.gridInfo.columns
     const blocks = this.state.blocks
+    // Return from the function if there is no grid or there is no start point
+    if(!totalSquares || !this.state.gridInfo.start) return 
     let adjList = {}
     // Create array of all neighbours for a given square
     for(let i=0; i < totalSquares; i++){
@@ -117,8 +119,7 @@ export default class App extends Component {
       })
       adjList[i] = filteredArray
     }
-    console.log(adjList)
-    console.log("made the list")
+    // Update state with adjacency list and begin the search
     this.setState({adjList}, this.bfs)
   }
 
@@ -142,10 +143,16 @@ export default class App extends Component {
     const gridInfo = this.state.gridInfo
     gridInfo.end = null
     gridInfo.start = null
-    this.setState({visited: [],path: []})
+    this.setState({ 
+      visited: [],
+      path: [],
+      blocks: [],
+      gridInfo
+    })
   }
 
   handleButton = (event) => {
+    // Get the value of the button the user clicked on
     const value = event.target.value
     // Go back to intial state of all false values
     const buttonControls = {
@@ -153,6 +160,7 @@ export default class App extends Component {
       setEnd: false,
       setBlocks: false
     }
+    // Update boolean th
     if(value === "start"){buttonControls.setStart = true}
     else if(value === "end"){buttonControls.setEnd = true}
     else if(value === "block"){buttonControls.setBlocks = true}
@@ -161,23 +169,30 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <Inputs getSquares={this.getSquares} />
-        <Grid 
-          gridInfo={this.state.gridInfo} 
-          totalSquares={this.state.totalSquares} 
-          blocks={this.state.blocks}
-          onClick={this.getPosition}
-          visited={this.state.visited}
-          path={this.state.path}
-        />
-        <Buttons 
-          handlePress={this.handleButton} 
-          buttonControls={this.state.buttonControls}
-          startSearch={this.createAdjList}
-          clearBoard={this.clearBoard}
-        />
-        
+      <div className="main">
+        <div className="left-column">
+          <h1>React</h1>
+          <h1>Path-Finder</h1>
+          <p>Portfolio Project by Anthony Carroll</p>
+          <Inputs getSquares={this.getSquares} />
+          <Buttons 
+            handlePress={this.handleButton} 
+            buttonControls={this.state.buttonControls}
+            startSearch={this.createAdjList}
+            clearBoard={this.clearBoard}
+          />
+        </div>
+        <div className="right-column">
+          <Grid 
+            gridInfo={this.state.gridInfo} 
+            totalSquares={this.state.totalSquares} 
+            blocks={this.state.blocks}
+            onClick={this.getPosition}
+            visited={this.state.visited}
+            path={this.state.path}
+          />
+
+        </div>
       </div>
     )
   }

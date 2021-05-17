@@ -1,4 +1,4 @@
-- Add the ability to create blocks 
+- Add the ability to create blocks - DONE
 - fix the search so all neighbours fire at once
 - Styling 
     - Darkmode

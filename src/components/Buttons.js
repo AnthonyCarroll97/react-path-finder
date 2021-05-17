@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import './Buttons.css'
 
 export default class Buttons extends Component {
     
     render() {
         
         return (
-            <div className="buttons-container">
+            <div className="buttons-main">
                 <button 
                 onClick={this.props.handlePress}
                 value="start"
@@ -35,7 +34,6 @@ export default class Buttons extends Component {
 
                     Set Block
                 </button>
-
             </div>
         )
     }
