@@ -3,28 +3,31 @@ import Buttons from './components/Buttons'
 import Grid from './components/Grid'
 import Inputs from './components/Inputs'
 
+
+
 export default class App extends Component {
+
   constructor(props){
     super(props)
     this.state = {
-      gridInfo: {
-        rows: 0,
-        columns: 0,
-        start: null,
-        end: null,
-        
-      },
-      buttonControls: {
-        setStart: false,
-        setEnd: false,
-        setBlocks: false,
-      },
-      totalSquares: 0,
-      adjList: {},
-      visited: [],
-      path: [],
-      blocks: []
-    }
+        gridInfo: {
+          rows: 0,
+          columns: 0,
+          start: null,
+          end: null,
+          
+        },
+        buttonControls: {
+          setStart: false,
+          setEnd: false,
+          setBlocks: false,
+        },
+        totalSquares: 0,
+        adjList: {},
+        visited: [],
+        path: [],
+        blocks: []
+      }
     
   }
   // This function will be passed down to the inputs component to get the user input for rows and columns
@@ -37,6 +40,7 @@ export default class App extends Component {
     this.setState({totalSquares, gridInfo})
   }
   startSearch = () => {
+    return new Promise((resolve, reject) => {
     const que = []
     const visited = Array(this.state.totalSquares).fill(false) 
     const prev = Array(this.state.totalSquares).fill(null)
@@ -47,29 +51,35 @@ export default class App extends Component {
     que.push(start)
     visited[start] = true
 
-    const searchPromise = new Promise((resolve, reject) => {
-      const searchInterval = setInterval(() => {
-        const node = que.shift()
-          // check neighbours of the current node
-          adjList[node].forEach(neighbour => {
-              if (!visited[neighbour]) {
-                  que.push(neighbour)
-                  visited[neighbour] = true
-                  prev[neighbour] = node
-                  // colour visited nodes
-                  
-              }
-          })
+    const searchInterval = setInterval(() => {
+      const node = que.shift()
+        // check neighbours of the current node
+        adjList[node].forEach(neighbour => {
+            if (!visited[neighbour]) {
+                que.push(neighbour)
+                visited[neighbour] = true
+                prev[neighbour] = node
+            }
+        })
 
-          this.setState({visited})
-          if (visited[end] === true){
-              clearInterval(searchInterval)
-              resolve()
-          }
-      }, 500)
+        this.setState({visited})
+        if(que.length === 0){
+          console.log("cant get there")
+          clearInterval(searchInterval)
+          reject()
+        }
+        if (visited[end]){
+            clearInterval(searchInterval)
+            resolve()
+        }
+    }, 100)
     })
 
-    searchPromise.then(() => {
+    
+  }
+  bfs = () => {
+    this.startSearch()
+    .then(() => {
       // find shortest path
       const path = Array(1).fill(end)
       let current = end
@@ -79,8 +89,10 @@ export default class App extends Component {
       }
       this.setState({path: path.reverse()})
     })
+    .catch(() => {
+      console.log("inside catch")
+    })
   }
-
   
   createAdjList = () => {
     // Convert state into variables to improve readability
@@ -107,7 +119,7 @@ export default class App extends Component {
     }
     console.log(adjList)
     console.log("made the list")
-    this.setState({adjList}, this.startSearch)
+    this.setState({adjList}, this.bfs)
   }
 
   getPosition = (event) => {
@@ -116,24 +128,16 @@ export default class App extends Component {
 
       if(this.state.buttonControls.setStart){
           gridInfo.start = position
-          this.setState(
-            {gridInfo})
+          this.setState({gridInfo})
         } else if (this.state.buttonControls.setEnd){
           gridInfo.end = position
-          this.setState({
-            gridInfo,
-            setEnd: false
-          })
+          this.setState({gridInfo})
         } else if(this.state.buttonControls.setBlocks){
           let blocks = this.state.blocks
           blocks.push(position)
-          this.setState({
-            blocks,
-            setBlocks: false
-          },() => console.log(this.state))
+          this.setState({blocks})
         }
   }
-  
   clearBoard = () => {
     const gridInfo = this.state.gridInfo
     gridInfo.end = null
@@ -143,13 +147,16 @@ export default class App extends Component {
 
   handleButton = (event) => {
     const value = event.target.value
-    const buttonControls = this.state.buttonControls
-    if(value === "start"){
-      buttonControls.setStart = true
-      this.setState({ buttonControls }, () => {console.log(this.state)})
+    // Go back to intial state of all false values
+    const buttonControls = {
+      setStart: false,
+      setEnd: false,
+      setBlocks: false
     }
-    if(value === "end"){this.setState((prevState) => ({setEnd: !prevState.setEnd}))}
-    if(value === "block"){this.setState((prevState) => ({setBlocks: !prevState.setBlocks}))}
+    if(value === "start"){buttonControls.setStart = true}
+    else if(value === "end"){buttonControls.setEnd = true}
+    else if(value === "block"){buttonControls.setBlocks = true}
+    this.setState({ buttonControls })
   }
 
   render() {
@@ -157,17 +164,18 @@ export default class App extends Component {
       <div>
         <Inputs getSquares={this.getSquares} />
         <Grid 
-        gridInfo={this.state.gridInfo} 
-        totalSquares={this.state.totalSquares} 
-        onClick={this.getPosition}
-        visited={this.state.visited}
-        path={this.state.path}
+          gridInfo={this.state.gridInfo} 
+          totalSquares={this.state.totalSquares} 
+          blocks={this.state.blocks}
+          onClick={this.getPosition}
+          visited={this.state.visited}
+          path={this.state.path}
         />
         <Buttons 
-        handlePress={this.handleButton} 
-        buttonControls={this.state.buttonControls}
-        startSearch={this.createAdjList}
-        clearBoard={this.clearBoard}
+          handlePress={this.handleButton} 
+          buttonControls={this.state.buttonControls}
+          startSearch={this.createAdjList}
+          clearBoard={this.clearBoard}
         />
         
       </div>

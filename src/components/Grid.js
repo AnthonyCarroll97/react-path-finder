@@ -3,8 +3,10 @@ import Square from './Square'
 import './grid.css'
 
 export default class Grid extends Component {
-    
-    renderSquares(gridInfo, visited, path){
+    constructor(props){
+        super(props)
+    }
+    renderSquares(gridInfo, visited, path,blocks){
         if(gridInfo.rows === 0){return null}
         const squareArray = new Array(this.props.totalSquares)
         
@@ -15,6 +17,7 @@ export default class Grid extends Component {
             else if (gridInfo.end === i){className = "end-square"}
             else if (path.includes(i)){className = "path"}
             else if (visited[i]){className = "visited"}
+            else if(blocks.includes(i)){className = "block"}
             else {className = null}
 
             squareArray.push(<Square className={className} onClick={this.props.onClick} i={i} key={i}/>)
@@ -32,7 +35,7 @@ export default class Grid extends Component {
         }
         return(
             <div style={gridStyle}>
-                {this.renderSquares(this.props.gridInfo, this.props.visited, this.props.path)}
+                {this.renderSquares(this.props.gridInfo, this.props.visited, this.props.path,this.props.blocks)}
             </div>
         )
     }
