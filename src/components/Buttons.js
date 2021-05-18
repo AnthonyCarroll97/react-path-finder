@@ -9,7 +9,7 @@ export default class Buttons extends Component {
                 <button 
                 onClick={this.props.handlePress}
                 value="start"
-                className={this.props.buttonControls.setStart ? "start-active" : null}
+                className={this.props.buttonControls.setStart ? "button-active" : null}
                 >
                 Start
                 </button>
@@ -17,7 +17,7 @@ export default class Buttons extends Component {
                 <button 
                 onClick={this.props.handlePress}
                 value="end"
-                className={this.props.buttonControls.setEnd ? "end-active" : null}
+                className={this.props.buttonControls.setEnd ? "button-active" : null}
                 >
                 End</button>
                 <button 
@@ -30,7 +30,7 @@ export default class Buttons extends Component {
                 <button
                 onClick={this.props.handlePress}
                 value="block"
-                className={this.props.buttonControls.setBlocks ? "block-active" : null}>
+                className={this.props.buttonControls.setBlocks ? "button-active" : null}>
 
                     Set Block
                 </button>

@@ -58,8 +58,9 @@ export default class Inputs extends Component {
     render() {
         return (
             <div className="inputs-main">
-                <form onSubmit={this.handleSubmit}>
+                <form autoComplete="off" onSubmit={this.handleSubmit}>
                     <input 
+                    autoComplete="off"
                     type="number"
                     placeholder="rows"
                     name="rows" 
@@ -68,6 +69,7 @@ export default class Inputs extends Component {
                     />
                     <div className="error">{this.state.rowError}</div>
                     <input 
+                    autoComplete="off"
                     type="number"
                     placeholder="columns"
                     name="columns" 

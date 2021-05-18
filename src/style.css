@@ -19,15 +19,24 @@ input::-webkit-inner-spin-button {
 .left-column{
     padding: 1rem;
 }
+.right-column{
+    display:flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
 button{
     background: #404040;
     color: whitesmoke;
     padding: 5px;
+    cursor: pointer;
 }
 .inputs-main{
     background: #282828;
     border-radius: 8px;
     padding: 1rem;
+}
+.inputs-main input{
+    color: black;
 }
 .buttons-main{
     display: flex;
@@ -39,18 +48,10 @@ button{
     margin-top: 0.5rem;
 }
 
-
-.start-active {
-    background: lightblue
+.button-active{
+    background: whitesmoke;
+    color:black;
 }
-.end-active{
-    background: lightcoral
-}
-
-.block-active{
-    background: lightseagreen;
-}
-
 .error{
     color: red;
 }

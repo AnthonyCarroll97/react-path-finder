@@ -25,7 +25,8 @@ export default class App extends Component {
         adjList: {},
         visited: [],
         path: [],
-        blocks: []
+        blocks: [],
+        gameError: ""
       }
     
   }
@@ -36,6 +37,8 @@ export default class App extends Component {
       rows: parseInt(userInput.rows),
       columns: parseInt(userInput.columns)
     }
+    // Check if a grid has already been created, if so, clear the grid
+    if(this.state.totalSquares > 0) this.clearBoard()
     this.setState({totalSquares, gridInfo})
   }
   startSearch = () => {
@@ -43,8 +46,7 @@ export default class App extends Component {
     const que = []
     const visited = Array(this.state.totalSquares).fill(false) 
     const prev = Array(this.state.totalSquares).fill(null)
-    const start = this.state.gridInfo.start
-    const end = this.state.gridInfo.end
+    const {start, end} = this.state.gridInfo
     const adjList = this.state.adjList
 
     que.push(start)
@@ -90,7 +92,7 @@ export default class App extends Component {
       this.setState({path: path.reverse()})
     })
     .catch(() => {
-      console.log("inside catch")
+      this.setState({gameError: "you done fucked it up"})
     })
   }
   
@@ -100,7 +102,8 @@ export default class App extends Component {
     const columns = this.state.gridInfo.columns
     const blocks = this.state.blocks
     // Return from the function if there is no grid or there is no start point
-    if(!totalSquares || !this.state.gridInfo.start) return 
+    console.log(this.state, "just before logic gate")
+    if(!totalSquares || this.state.gridInfo.start === null) return 
     let adjList = {}
     // Create array of all neighbours for a given square
     for(let i=0; i < totalSquares; i++){
@@ -123,6 +126,7 @@ export default class App extends Component {
     this.setState({adjList}, this.bfs)
   }
 
+  // This function executes when the user clicks on a square
   getPosition = (event) => {
     const position = parseInt(event.target.value)
     const gridInfo = this.state.gridInfo
@@ -147,7 +151,8 @@ export default class App extends Component {
       visited: [],
       path: [],
       blocks: [],
-      gridInfo
+      gridInfo,
+      gameError: ""
     })
   }
 
@@ -191,7 +196,7 @@ export default class App extends Component {
             visited={this.state.visited}
             path={this.state.path}
           />
-
+          <p>{this.state.gameError}</p>
         </div>
       </div>
     )
