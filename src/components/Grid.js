@@ -24,7 +24,7 @@ export default class Grid extends Component {
                     onClick={this.props.onClick} 
                     i={i} 
                     key={i}
-                    x={className === "block" ? "X" : null}
+                    
                 />)
         }
         return squareArray

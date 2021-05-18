@@ -9,31 +9,34 @@ export default class Buttons extends Component {
                 <button 
                 onClick={this.props.handlePress}
                 value="start"
-                className={this.props.buttonControls.setStart ? "button-active" : null}
+                className={this.props.buttonControls.setStart ? "button-active" : "hover"}
                 >
-                Start
+                Set Start
                 </button>
                 
                 <button 
                 onClick={this.props.handlePress}
                 value="end"
-                className={this.props.buttonControls.setEnd ? "button-active" : null}
+                className={this.props.buttonControls.setEnd ? "button-active" : "hover"}
                 >
-                End</button>
-                <button 
-                onClick={this.props.startSearch}
-                value="begin">Begin</button>
-                <button
-                onClick={this.props.clearBoard}>
-                    Clear
+                Set End
                 </button>
                 <button
                 onClick={this.props.handlePress}
                 value="block"
-                className={this.props.buttonControls.setBlocks ? "button-active" : null}>
-
-                    Set Block
+                className={this.props.buttonControls.setBlocks ? "button-active" : "hover"}
+                >
+                Set Block
                 </button>
+                <button
+                onClick={this.props.clearBoard}
+                className="button-large hover clear">
+                Clear
+                </button>
+                <button 
+                onClick={this.props.startSearch}
+                className="button-large hover begin"
+                >Begin</button>
             </div>
         )
     }

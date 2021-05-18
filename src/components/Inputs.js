@@ -77,7 +77,7 @@ export default class Inputs extends Component {
                     onChange={this.handleChange}
                     />
                     <div className="error">{this.state.columnError}</div>
-                    <button>Create Table</button>
+                    <button className="hover create-table">Create Table</button>
                 </form>
             </div>
         )

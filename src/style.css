@@ -3,13 +3,21 @@
     margin: 0;
     padding: 0;
     color: #FFFFFF;
+    font-family: 'Lato', sans-serif;
     
+}
+#root{
+    background: #121212;
+    display: flex;
+    justify-content: center;
 }
 .main{
     height: 100vh;
     background: #121212;
+    justify-self: center;
     display: grid;
     grid-template-columns: 1fr 2fr;
+    max-width: 1200px;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -17,26 +25,38 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 .left-column{
-    padding: 1rem;
+    padding: 2.5rem 1rem;
+    display: flex;
+    flex-direction: column;
 }
 .right-column{
     display:flex;
-    justify-content: center;
-    padding-top: 2rem;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2.5rem;
 }
 button{
     background: #404040;
     color: whitesmoke;
-    padding: 5px;
     cursor: pointer;
 }
 .inputs-main{
     background: #282828;
     border-radius: 8px;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
 }
 .inputs-main input{
     color: black;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 80%;
+    border-radius: 5px;
+}
+.hover:hover{
+    background:#525252;
 }
 .buttons-main{
     display: flex;
@@ -47,10 +67,28 @@ button{
     padding: 1.5rem;
     margin-top: 0.5rem;
 }
-
+.left-column button{
+    padding: 0.7em 1.7em;
+    text-align: center;
+    font-weight: 500;
+    border-radius: 10px;
+    border-style: solid;
+    
+}
+.react{
+    color: #61DBFB;
+    font-size: 2.5rem;
+}
 .button-active{
     background: whitesmoke;
     color:black;
+}
+.button-large{
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+.begin{
+    color: #61DBFB
 }
 .error{
     color: red;

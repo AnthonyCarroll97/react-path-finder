@@ -5,7 +5,6 @@ import Inputs from './components/Inputs'
 import './style.css'
 
 export default class App extends Component {
-
   constructor(props){
     super(props)
     this.state = {
@@ -28,58 +27,60 @@ export default class App extends Component {
         blocks: [],
         gameError: ""
       }
-    
   }
   // This function will be passed down to the inputs component to get the user input for rows and columns
   getSquares = (userInput) => {
     const totalSquares = parseInt(userInput.rows) * parseInt(userInput.columns)
-    const gridInfo = {
-      rows: parseInt(userInput.rows),
-      columns: parseInt(userInput.columns)
-    }
+    const gridInfo = this.state.gridInfo
+    gridInfo.rows = parseInt(userInput.rows)
+    gridInfo.columns = parseInt(userInput.columns)
     // Check if a grid has already been created, if so, clear the grid
     if(this.state.totalSquares > 0) this.clearBoard()
     this.setState({totalSquares, gridInfo})
   }
-  startSearch = () => {
+  searchGrid = () => {
     return new Promise((resolve, reject) => {
-    const que = []
+    this.que = []
     const visited = Array(this.state.totalSquares).fill(false) 
     const prev = Array(this.state.totalSquares).fill(null)
     const {start, end} = this.state.gridInfo
     const adjList = this.state.adjList
 
-    que.push(start)
+    this.que.push(start)
     visited[start] = true
 
     const searchInterval = setInterval(() => {
-      const node = que.shift()
+      const newQue = []
+      while(this.que.length != 0){
+        const node = this.que.shift()
         // check neighbours of the current node
         adjList[node].forEach(neighbour => {
             if (!visited[neighbour]) {
-                que.push(neighbour)
+                newQue.push(neighbour)
                 visited[neighbour] = true
                 prev[neighbour] = node
             }
         })
 
-        this.setState({visited})
-        if(que.length === 0){
-          console.log("cant get there")
-          clearInterval(searchInterval)
-          reject()
-        }
-        if (visited[end]){
-            clearInterval(searchInterval)
-            resolve({prev, end})
-        }
-    }, 100)
-    })
+      }
+      this.que = newQue
 
-    
+      this.setState({visited})
+      if(this.que.length === 0){
+        console.log("cant get there")
+        clearInterval(searchInterval)
+        reject()
+      }
+      if (visited[end]){
+          clearInterval(searchInterval)
+          resolve({prev, end})
+      }
+    }, 200)
+    })
   }
+
   bfs = () => {
-    this.startSearch()
+    this.searchGrid()
     .then((data) => {
       // find shortest path
       const {prev, end} = data
@@ -92,7 +93,7 @@ export default class App extends Component {
       this.setState({path: path.reverse()})
     })
     .catch(() => {
-      this.setState({gameError: "you done fucked it up"})
+      this.setState({gameError: "Something went wrong"})
     })
   }
   
@@ -102,8 +103,8 @@ export default class App extends Component {
     const columns = this.state.gridInfo.columns
     const blocks = this.state.blocks
     // Return from the function if there is no grid or there is no start point
-    console.log(this.state, "just before logic gate")
     if(!totalSquares || this.state.gridInfo.start === null) return 
+    console.log(this.state, "in adj list")
     let adjList = {}
     // Create array of all neighbours for a given square
     for(let i=0; i < totalSquares; i++){
@@ -165,7 +166,7 @@ export default class App extends Component {
       setEnd: false,
       setBlocks: false
     }
-    // Update boolean th
+    // Update boolean that matches the button the user has pressed
     if(value === "start"){buttonControls.setStart = true}
     else if(value === "end"){buttonControls.setEnd = true}
     else if(value === "block"){buttonControls.setBlocks = true}
@@ -176,7 +177,7 @@ export default class App extends Component {
     return (
       <div className="main">
         <div className="left-column">
-          <h1>React</h1>
+          <h1 className="react">React</h1>
           <h1>Path-Finder</h1>
           <p>Portfolio Project by Anthony Carroll</p>
           <Inputs getSquares={this.getSquares} />
