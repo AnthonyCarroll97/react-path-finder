@@ -60,12 +60,19 @@ button{
 }
 .buttons-main{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
     background: #282828;
     border-radius: 8px;
     padding: 1.5rem;
     margin-top: 0.5rem;
+}
+.large-buttons-main{
+    display: flex;
+    justify-content: space-evenly;
+    background: #282828;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border-radius: 8px;
 }
 .left-column button{
     padding: 0.7em 1.7em;
