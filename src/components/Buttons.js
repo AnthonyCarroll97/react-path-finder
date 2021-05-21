@@ -27,7 +27,7 @@ export default class Buttons extends Component {
                     value="block"
                     className={this.props.buttonControls.setBlocks ? "button-active" : "hover"}
                     >
-                    Set Block
+                    Place Obstacle
                     </button>
                     
                     

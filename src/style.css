@@ -33,7 +33,7 @@ input::-webkit-inner-spin-button {
     display:flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2.5rem;
+    padding-top: 5rem;
 }
 button{
     background: #404040;
@@ -84,7 +84,11 @@ button{
 }
 .react{
     color: #61DBFB;
-    font-size: 2.5rem;
+    font-size: 2.8rem;
+}
+.path-finder{
+    font-size: 2.3rem;
+    margin-bottom: 0.5rem;
 }
 .button-active{
     background: whitesmoke;
@@ -99,9 +103,10 @@ button{
 }
 .error{
     color: red;
+    padding-bottom: 0.5rem;
 }
 .start-square{
-    background: lightcyan
+    background: #c3f1fc
 }
 
 .end-square{
@@ -115,4 +120,18 @@ button{
 }
 .block{
     background: brown
+}
+.icon{
+    max-height: 50px;
+}
+.icons-container{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1.2rem;
+}
+.details{
+    margin-top: 3rem;
+}
+.game-error{
+    margin-top: 1rem;
 }

@@ -4,6 +4,7 @@ import Grid from './components/Grid'
 import Inputs from './components/Inputs'
 import './style.css'
 
+
 export default class App extends Component {
   constructor(props){
     super(props)
@@ -93,7 +94,7 @@ export default class App extends Component {
       this.setState({path: path.reverse()})
     })
     .catch(() => {
-      this.setState({gameError: "Something went wrong"})
+      this.setState({gameError: "No path found, please clear the board and try again"})
     })
   }
   
@@ -104,7 +105,6 @@ export default class App extends Component {
     const blocks = this.state.blocks
     // Return from the function if there is no grid or there is no start point
     if(!totalSquares || this.state.gridInfo.start === null) return 
-    console.log(this.state, "in adj list")
     let adjList = {}
     // Create array of all neighbours for a given square
     for(let i=0; i < totalSquares; i++){
@@ -178,7 +178,7 @@ export default class App extends Component {
       <div className="main">
         <div className="left-column">
           <h1 className="react">React</h1>
-          <h1>Path-Finder</h1>
+          <h1 className="path-finder">Path-Finder</h1>
           <p>Portfolio Project by Anthony Carroll</p>
           <Inputs getSquares={this.getSquares} />
           <Buttons 
@@ -187,6 +187,18 @@ export default class App extends Component {
             startSearch={this.createAdjList}
             clearBoard={this.clearBoard}
           />
+          <div className="details">
+            <p>Feel free to connect with me on LinkedIn, or check out the code for this project with the links below</p>
+            <div className="icons-container">
+              <a href="https://github.com/AnthonyCarroll97">
+                <img className="icon"src="./Github-Icon.png"></img>
+              </a>
+              <a href="https://www.linkedin.com/in/anthony-carroll-3130661bb/">
+                <img className="icon" src="./LinkedIn-Icon.png"></img>
+              </a>
+            </div>
+            
+          </div>
         </div>
         <div className="right-column">
           <Grid 
@@ -197,8 +209,10 @@ export default class App extends Component {
             visited={this.state.visited}
             path={this.state.path}
           />
-          <p>{this.state.gameError}</p>
+          <p className="game-error">{this.state.gameError}</p>
         </div>
+        
+        
       </div>
     )
   }
