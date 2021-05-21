@@ -68,7 +68,6 @@ export default class App extends Component {
 
       this.setState({visited})
       if(this.que.length === 0){
-        console.log("cant get there")
         clearInterval(searchInterval)
         reject()
       }
